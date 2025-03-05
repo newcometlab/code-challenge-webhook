@@ -19,6 +19,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.text());
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.raw());
 
 app.use('/webhook', webhookRouter);
 
