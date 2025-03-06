@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Message from '../models/MessageModel';
+import { extractSecretCode } from '../utils';
 
 export const webhookController = {
     handleWebhook: async (req: Request, res: Response) => {
@@ -9,15 +10,17 @@ export const webhookController = {
             const contentType = req.headers['content-type'];
 
             if (contentType?.includes('application/json')) {
-              payload = JSON.stringify(req.body);
+                payload = JSON.stringify(req.body);
             } else if (contentType?.includes('text/plain')) {
-              payload = req.body;
+                payload = req.body;
             } else if (contentType?.includes('application/x-www-form-urlencoded')) {
-              payload = JSON.stringify(req.body);
+                payload = JSON.stringify(req.body);
             } else {
-              payload = req.body.toString();
+                payload = req.body.toString();
             }
-      
+
+            // const secret = extractSecretCode(payload);
+
             const webhookData = new Message({ payload });
             await webhookData.save();
 
